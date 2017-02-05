@@ -35,3 +35,36 @@ ruby-os-x/bin/ruby main.rb
 ```
 
 Show the folder structure.
+
+## mruby
+
+Download the source for mruby from Github.
+
+Unpackage it:
+
+```shell
+tar -xzf mruby-1.2.0.zip -C mruby
+```
+
+```shell
+cp main.rb mruby/main.rb
+```
+
+Add the environment variables mrubygem:
+
+```ruby
+  # build_config.rb
+  conf.gem :github => 'iij/mruby-env'
+```
+
+And compile:
+
+```shell
+ruby ./minirake
+```
+
+IRB console:
+
+```bash
+
+```
