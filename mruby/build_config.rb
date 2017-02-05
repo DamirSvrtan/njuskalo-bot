@@ -13,6 +13,7 @@ MRuby::Build.new do |conf|
   # Use mrbgems
   conf.gem :github => 'iij/mruby-env'
   conf.gem :mgem => 'mruby-curl'
+  conf.gem :github => 'mattn/mruby-onig-regexp'
   # conf.gem 'examples/mrbgems/ruby_extension_example'
   # conf.gem 'examples/mrbgems/c_extension_example' do |g|
   #   g.cc.flags << '-g' # append cflags in this gem

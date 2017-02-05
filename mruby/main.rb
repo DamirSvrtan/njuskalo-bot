@@ -3,7 +3,7 @@ RECIPIENTS = ['damir.svrtan@gmail.com']
 MAILGUN_API_KEY = ENV['MAILGUN_API_KEY']
 
 class NewApartments
-  LAST_SCRAPPED_AT = Time.now - 500 * 60 # 5 minutes ago.
+  LAST_SCRAPPED_AT = Time.now - 5000 * 60 # 5 minutes ago.
   attr_reader :url
 
   def initialize(url)
@@ -18,9 +18,9 @@ class NewApartments
 
   def publish_dates
     response_body
-      .scan(/datetime\="(.*)" /)
+      .onig_regexp_scan(OnigRegexp.new('datetime\="(.*)" '))
       .map(&:first)
-      .map { |time| Time.parse(time) }
+      .map { |time| Iso8601ToTime.new(time).call }
   end
 
   def response_body
@@ -36,25 +36,23 @@ class MailgunEmailer
   def initialize(subject, message, recipients)
     @subject = subject
     @message = message
-    @recipients = recipients
+    @recipients = recipients.join(', ')
   end
 
   def call
-    Net::HTTP.post_form(
-      uri,
-      from: from,
-      to: recipients,
-      subject: subject,
-      html: message
-    )
+    req = HTTP::Request.new
+    req.method = 'POST'
+    req.body = "from=#{from}&to=#{recipients}&subject=#{subject}&html=#{message}"
+    req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+    body = Curl.new.send(uri, req).body
+    puts body
+    body
   end
 
   private
 
   def uri
-    URI(
-      "https://api:key-#{MAILGUN_API_KEY}@api.mailgun.net/v3/#{domain}/messages"
-    )
+    "https://api:key-#{MAILGUN_API_KEY}@api.mailgun.net/v3/#{domain}/messages"
   end
 
   def from
@@ -63,6 +61,54 @@ class MailgunEmailer
 
   def domain
     'sandboxc0539931f2194f9fbed09ad7179d4901.mailgun.org'
+  end
+end
+
+class Iso8601ToTime
+  REGEX = OnigRegexp.new('(\d{4})-(\d{2})-(\d{2})T(\d{2})\:(\d{2})\:(\d{2})[+-](\d{2})\:(\d{2})')
+
+  attr_reader :string
+
+  def initialize(string)
+    @string = string
+  end
+
+  def call
+    Time.gm(year, month, day, hour, minute, second)
+  end
+
+  private
+
+  def match_data
+    string.match(REGEX)
+  end
+
+  def year
+    match_data[1].to_i
+  end
+
+  def month
+    match_data[2].to_i
+  end
+
+  def day
+    match_data[3].to_i
+  end
+
+  def hour
+    match_data[4].to_i - zone
+  end
+
+  def minute
+    match_data[5].to_i
+  end
+
+  def second
+    match_data[6].to_i
+  end
+
+  def zone
+    match_data[7].to_i
   end
 end
 
