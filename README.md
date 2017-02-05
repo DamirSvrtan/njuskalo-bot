@@ -66,5 +66,18 @@ ruby ./minirake
 IRB console:
 
 ```bash
+bin/mirb
+```
 
+Run it:
+
+```bash
+bin/mruby main.rb
+```
+
+Run it compiled:
+
+```bash
+bin/mrbc main.rb
+bin/mruby -b main.mrb
 ```
