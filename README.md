@@ -40,6 +40,8 @@ Show the folder structure.
 
 Download the source for mruby from Github.
 
+[5 ways to execute mruby](https://blog.mruby.sh/201207020720.html)
+
 Unpackage it:
 
 ```shell
