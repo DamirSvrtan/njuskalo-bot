@@ -98,6 +98,18 @@ bin/mrbc main.rb
 bin/mruby -b main.mrb
 ```
 
+## Mruby-CLI
+
+Go to [Mruby Releases](https://github.com/hone/mruby-cli/releases) and download the OS X package.
+
+Unpackage it into the root folder: `tar -xzf mruby-cli-0.0.4-x86_64-apple-darwin14.tgz`
+
+Generate a new Mruby CLI app:
+
+```shell
+./mruby-cli -s mruby-cli-app
+```
+
 ## JRuby
 
 http://blog.headius.com/2010/03/jruby-startup-time-tips.html
