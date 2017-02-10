@@ -12,7 +12,7 @@ MRuby::Build.new do |conf|
 
   # Use mrbgems
   conf.gem :github => 'iij/mruby-env'
-  conf.gem :mgem => 'mruby-curl'
+  conf.gem :git => 'https://github.com/matsumoto-r/mruby-simplehttp.git'
   conf.gem :github => 'mattn/mruby-onig-regexp'
   # conf.gem 'examples/mrbgems/ruby_extension_example'
   # conf.gem 'examples/mrbgems/c_extension_example' do |g|

@@ -24,9 +24,8 @@ class NewApartments
   end
 
   def response_body
-    req = HTTP::Request.new
-    req.method = 'GET'
-    Curl.new.send(SEARCH_URL, req).body
+    aha = SimpleHttp.new("http", "iapi.njuskalo.hr").request("GET", "?ctl=browse_ads&sort=new&categoryId=10920&locationId=2619&locationId_level_0=1153&locationId_level_1=1250&locationId_level_2=2619&price%5Bmin%5D=150&price%5Bmax%5D=400&mainAreaFrom=40&mainAreaTo=&adsWithImages=1&flatTypeId=0&floorCountId=0&roomCountId=0&flatFloorIdFrom=0&flatFloorIdTo=0&gardenAreaFrom=&gardenAreaTo=&balconyAreaFrom=&balconyAreaTo=&teraceAreaFrom=&teraceAreaTo=&yearBuiltFrom=&yearBuiltTo=&yearLastRebuildFrom=&yearLastRebuildTo=", {})
+    aha.body
   end
 end
 
@@ -40,19 +39,24 @@ class MailgunEmailer
   end
 
   def call
-    req = HTTP::Request.new
-    req.method = 'POST'
-    req.body = "from=#{from}&to=#{recipients}&subject=#{subject}&html=#{message}"
-    req.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-    body = Curl.new.send(uri, req).body
-    puts body
-    body
+    `#{curl_call}`
+  end
+
+  def curl_call
+    <<-HEREDOC
+      curl -s --user 'api:key-#{MAILGUN_API_KEY}' \
+          #{uri} \
+          -F from='#{from}' \
+          -F to='#{recipients}' \
+          -F subject='Hello' \
+          -F text='Testing some Mailgun awesomeness!'
+    HEREDOC
   end
 
   private
 
   def uri
-    "https://api:key-#{MAILGUN_API_KEY}@api.mailgun.net/v3/#{domain}/messages"
+    "https://api.mailgun.net/v3/#{domain}/messages"
   end
 
   def from
