@@ -32,47 +32,25 @@ class NewApartments
 end
 
 class MailgunEmailer
-  attr_reader :subject, :message, :recipients
+  DOMAIN = 'sandboxc0539931f2194f9fbed09ad7179d4901.mailgun.org'.freeze
 
-  def initialize(subject, message, recipients)
-    @subject = subject
-    @message = message
-    @recipients = recipients
-  end
-
-  def call
+  def self.call(subject, message, recipients)
     Net::HTTP.post_form(
-      uri,
-      from: from,
+      URI("https://api:key-#{MAILGUN_API_KEY}@api.mailgun.net/v3/#{DOMAIN}/messages"),
+      from: "Njuskalo Bot <postmaster@#{DOMAIN}>",
       to: recipients,
       subject: subject,
       html: message
     )
   end
-
-  private
-
-  def uri
-    URI(
-      "https://api:key-#{MAILGUN_API_KEY}@api.mailgun.net/v3/#{domain}/messages"
-    )
-  end
-
-  def from
-    "Njuskalo Bot <postmaster@#{domain}>"
-  end
-
-  def domain
-    'sandboxc0539931f2194f9fbed09ad7179d4901.mailgun.org'
-  end
 end
 
 if NewApartments.new(SEARCH_URL).any?
-  MailgunEmailer.new(
+  MailgunEmailer.call(
     'New Apartments found!',
     "Check new <a href='#{SEARCH_URL}'>apartments</a>",
     RECIPIENTS
-  ).call
+  )
   puts 'New apartments found!'
 else
   puts 'No new aparments :('
