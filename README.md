@@ -109,6 +109,24 @@ Generate a new Mruby CLI app:
 ```shell
 ./mruby-cli -s mruby-cli-app
 ```
+Build the binaries:
+
+```
+docker-compose run compile
+```
+
+The code is found inside of the mrblib/mruby-cli-app.rb
+
+After each change, build the app:
+
+```
+docker-compose run compile
+```
+
+Run your code:
+```
+mruby/build/x86_64-apple-darwin14/bin/mruby-cli-app
+```
 
 ## JRuby
 
