@@ -41,6 +41,15 @@ Add a lambda-function file that calls ruby linux x86 64.
 
 Enable to run: `chmod a+x lambda-function`
 
+### Zip the package to upload to AWS Lambda:
+
+```shell
+cd traveling-ruby
+zip -r njuskalo-bot.zip lambda-function lambda-function-wrapper.js main.rb ruby-linux-x86_64/
+```
+
+Upload zip on AWS console and add ENV variables: MAILGUN_API_KEY.
+
 ## mruby
 
 Download the source for mruby from Github.
