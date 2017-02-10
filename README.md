@@ -83,3 +83,7 @@ Run it compiled:
 bin/mrbc main.rb
 bin/mruby -b main.mrb
 ```
+
+## JRuby
+
+http://blog.headius.com/2010/03/jruby-startup-time-tips.html
