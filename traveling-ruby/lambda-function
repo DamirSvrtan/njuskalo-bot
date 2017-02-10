@@ -1,0 +1,2 @@
+#!/bin/bash
+ruby-linux-x86_64/bin/ruby main.rb

@@ -36,6 +36,11 @@ ruby-os-x/bin/ruby main.rb
 
 Show the folder structure.
 
+Add a lambda function wrapper in js.
+Add a lambda-function file that calls ruby linux x86 64.
+
+Enable to run: `chmod a+x lambda-function`
+
 ## mruby
 
 Download the source for mruby from Github.
